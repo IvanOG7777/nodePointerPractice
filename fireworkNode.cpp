@@ -112,6 +112,7 @@ public:
     void addNode(std:: shared_ptr<FireworkNode> &node) {
         if (root == nullptr) {
             root = node;
+            return;
         }
 
         int depth = 0;
@@ -161,24 +162,17 @@ int main() {
     firework.nodes.resize(100);
     firework.initRules();
 
-    for (auto &rule : firework.rules) {
-        std:: cout << "Rule type: " << rule.type << std:: endl;
-        std:: cout << "Rule payloads: " << std:: endl;
-        for (auto& payload : rule.payloads) {
-            std:: cout << "     Payload type: " << payload.type << std:: endl;
-            std:: cout << "     Payload count: " << payload.count << std:: endl;
-            std:: cout << std:: endl;
-        }
-        std:: cout << std:: endl;
-    }
-
-
     auto node1 = std::make_shared<Firework::FireworkNode>("Node1");
+    node1->particle.setPosition(30,34,0);
     auto node2 = std::make_shared<Firework::FireworkNode>("Node2");
+    node2->particle.setPosition(12,46,0);
     auto node3 = std::make_shared<Firework::FireworkNode>("Node3");
+    node3->particle.setPosition(52,22,0);
     std:: cout << std:: endl;
 
-    firework.addNode(node1);
+    std:: cout << "Address of node1: " << node1.get() << std::endl;
+    std:: cout << "Address of node2: " << node2.get() << std::endl;
+    std:: cout << "Address of node3: " << node3.get() << std::endl;
 
     if (firework.getRoot() == nullptr) {
         std:: cout << "Root is nullptr" << std:: endl;
@@ -186,38 +180,22 @@ int main() {
         std:: cout << "Root is not nullptr" << std:: endl;
     }
 
-    std:: cout << "Address of root: " << firework.getRoot() << std:: endl;
-    std:: cout << "Address of node1: " << node1.get() << std:: endl;
-
-    node1->left = node2;
-    node1->right = node3;
-
-    std:: cout << "Left of node1 is: " << node1->left->name  << ": " << node1->left.get() << std::endl;
-    std:: cout << "Right of node1 is: " << node1->right->name << ": "<< node1->right.get() << std::endl;
-
-    int node1RefCount = node1.use_count();
-    int node2RefCount = node2.use_count();
-    int node3RefCount = node3.use_count();
-    std:: cout << std:: endl;
-
-    std:: cout << "Node1 references: " << node1RefCount << std::endl;
-    std:: cout << "Node2 references: " << node2RefCount << std::endl;
-    std:: cout << "Node3 references: " << node3RefCount << std::endl;
-    std:: cout << std:: endl;
-
-    std:: cout << "Address of node1: " << node1.get() << std:: endl;
-    std:: cout << "Address of node2: " << node2.get() << std:: endl;
-    std:: cout << "Address of node3: " << node3.get() << std:: endl;
-    std:: cout << std:: endl;
-
     firework.nodes.push_back(node1);
     firework.nodes.push_back(node2);
     firework.nodes.push_back(node3);
     std:: cout << std:: endl;
 
+    
+
     for (auto &node : firework.nodes) {
-        std:: cout << node->name << std:: endl;
-        std:: cout << "Address: " << node.get() << std:: endl;
+        if (node == nullptr) continue;
+        std:: cout << node->name << " address: " << node.get() << std:: endl;
+        firework.addNode(node);
     }
+    std:: cout << std:: endl;
+
+    std:: cout << "Address of root node: " << firework.getRoot() << std:: endl;
+    std:: cout << "Address of root-left: " << firework.getRoot()->left.get() << std:: endl;
+    std:: cout << "Address of root-right: " << firework.getRoot()->right.get() << std:: endl;
     std:: cout << std:: endl;
 }
