@@ -44,8 +44,10 @@ int main() {
 
     if (firework.getRoot() == nullptr) {
         std:: cout << "Root is nullptr" << std:: endl;
+        std:: cout << std:: endl;
     } else {
         std:: cout << "Root is not nullptr" << std:: endl;
+        std:: cout << std:: endl;
     }
 
     firework.nodes[0] = node1;
@@ -67,12 +69,15 @@ int main() {
 
     if (firework.getRoot() == nullptr) {
         std:: cout << "Root is nullptr" << std:: endl;
+        std:: cout << std:: endl;
     } else {
         std:: cout << "Root is not nullptr" << std:: endl;
+        std:: cout << std:: endl;
     }
 
     std::shared_ptr<Firework::FireworkNode> bestNode = firework.findNearestNeighbor(node1);
 
-    std:: cout << "Closest node to node1 is: " << bestNode->name << std::endl;
+    std:: cout << "Closest node to node1 is: " << bestNode->name << " address: " << &bestNode << std::endl;
+    std:: cout << std:: endl;
 
 }
