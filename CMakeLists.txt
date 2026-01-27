@@ -9,6 +9,4 @@ add_executable(nodePointerPractice
         core.h
         fireworkNode.cpp
         particle.cpp
-        particle.h
-        main.cpp
-        fireworkNode.h)
+        particle.h)
