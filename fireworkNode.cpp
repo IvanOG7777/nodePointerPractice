@@ -109,17 +109,55 @@ public:
         rules[4].payloads[1].set(MEDIUM, 4);
     }
 
-    std::shared_ptr<FireworkNode> getRoot() {
-        return root;
+    void addNode(std:: shared_ptr<FireworkNode> &node) {
+        if (root == nullptr) {
+            root = node;
+        }
+
+        int depth = 0;
+        std:: shared_ptr<FireworkNode> current = root;
+
+        while (true) {
+            if (depth % 2 == 0) {
+                if (node->particle.getPosition().x >= current->particle.getPosition().x) {
+                    if (current->right == nullptr) {
+                        current->right = node;
+                        return;
+                    }
+                    current = current->right;
+                } else if (node->particle.getPosition().x <= current->particle.getPosition().x) {
+                    if (current->left == nullptr) {
+                        current->left = node;
+                        return;
+                    }
+                }
+            } else if (depth % 2 == 1) {
+                if (node->particle.getPosition().y >= current->particle.getPosition().y) {
+                    if (current->right == nullptr) {
+                        current->right = node;
+                        return;
+                    }
+                    current = current->right;
+                } else if (node->particle.getPosition().y <= current->particle.getPosition().y) {
+                    if (current->left == nullptr) {
+                        current->left = node;
+                        return;
+                    }
+                }
+            }
+            depth++;
+        }
+    }
+
+    FireworkNode *getRoot() {
+        return root.get();
     }
 };
 
 int main() {
     std:: random_device gen;
     Firework firework;
-    std:: cout << firework.getRoot().get() << std:: endl;
 
-    return 0;
     firework.nodes.resize(100);
     firework.initRules();
 
@@ -139,6 +177,17 @@ int main() {
     auto node2 = std::make_shared<Firework::FireworkNode>("Node2");
     auto node3 = std::make_shared<Firework::FireworkNode>("Node3");
     std:: cout << std:: endl;
+
+    firework.addNode(node1);
+
+    if (firework.getRoot() == nullptr) {
+        std:: cout << "Root is nullptr" << std:: endl;
+    } else {
+        std:: cout << "Root is not nullptr" << std:: endl;
+    }
+
+    std:: cout << "Address of root: " << firework.getRoot() << std:: endl;
+    std:: cout << "Address of node1: " << node1.get() << std:: endl;
 
     node1->left = node2;
     node1->right = node3;
