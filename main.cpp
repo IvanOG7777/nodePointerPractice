@@ -55,7 +55,7 @@ int main() {
     std:: cout << "Node1 ref count: " << node1.use_count() << std:: endl;
     std:: cout << "Node2 ref count: " << node2.use_count() << std::endl;
     std:: cout << "Node3 ref count: " << node3.use_count() << std:: endl;
-
+    std:: cout << std:: endl;
 
 
     // adding to the tree
@@ -75,26 +75,24 @@ int main() {
     }
 
     std::weak_ptr<Firework::FireworkNode> bestNode = firework.findNearestNeighbor(node1);
-
     std:: cout << "Closest node to node1 is: " << bestNode.lock()->name << " address: " << bestNode.lock().get() << " age: " << bestNode.lock()->age << std::endl;
+    std:: cout << std:: endl;
 
     std:: cout << "Node1 ref count: " << node1.use_count() << std:: endl;
     std:: cout << "Node2 ref count: " << node2.use_count() << std::endl;
     std:: cout << "Node3 ref count: " << node3.use_count() << std:: endl;
     std:: cout << std:: endl;
 
-    // while (true) {
-    //     for (std:: weak_ptr<Firework::FireworkNode> node : firework.nodes) {
-    //         auto nodePtr = node.lock();
-    //         if (nodePtr == nullptr) continue;
-    //
-    //         if (nodePtr->age <= 0.0f) {
-    //             std:: cout << "node is dead age is 0" << std:: endl;
-    //             nodePtr->type = Firework:: UNUSED;
-    //             break;
-    //         }
-    //         nodePtr->age -= testDT;
-    //     }
-    // }
+    while (true) {
+        for (std:: weak_ptr<Firework::FireworkNode> node : firework.nodes) {
+            auto nodePtr = node.lock();
+            if (nodePtr == nullptr) continue;
+            if (nodePtr->type == Firework:: UNUSED) continue;
+
+            std:: cout << "Node type: " << nodePtr->type << std:: endl;
+            std:: cout << "Node age: " << nodePtr->age << std:: endl;
+        }
+        break;
+    }
 
 }
