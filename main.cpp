@@ -5,6 +5,8 @@
 #include <iostream>
 #include "fireworkNode.h"
 
+constexpr float testDT = 0.016;
+
 int main() {
     std:: random_device gen;
     Firework firework;
@@ -35,9 +37,9 @@ int main() {
     // node6->type = Firework:: MEDIUM;
     // std:: cout << std:: endl;
 
-    std:: cout << "Address of node1: " << node1.get() << std::endl;
-    std:: cout << "Address of node2: " << node2.get() << std::endl;
-    std:: cout << "Address of node3: " << node3.get() << std::endl;
+    std:: cout << "Address of node1: " << node1.get() << " ref count: " << node1.use_count() << std::endl;
+    std:: cout << "Address of node2: " << node2.get() << " ref count: " << node2.use_count() << std::endl;
+    std:: cout << "Address of node3: " << node3.get() << " ref count: " << node3.use_count() << std::endl;
     // std:: cout << "Address of node4: " << node4.get() << std::endl;
     // std:: cout << "Address of node5: " << node5.get() << std::endl;
     // std:: cout << "Address of node6: " << node6.get() << std::endl;
@@ -49,6 +51,10 @@ int main() {
     // firework.nodes[4] = node5;
     // firework.nodes[5] = node6;
     std:: cout << std:: endl;
+
+    std:: cout << "Node1 ref count: " << node1.use_count() << std:: endl;
+    std:: cout << "Node2 ref count: " << node2.use_count() << std::endl;
+    std:: cout << "Node3 ref count: " << node3.use_count() << std:: endl;
 
 
 
@@ -70,10 +76,25 @@ int main() {
 
     std::weak_ptr<Firework::FireworkNode> bestNode = firework.findNearestNeighbor(node1);
 
-    std:: cout << "Closest node to node1 is: " << bestNode.lock()->name << " address: " << bestNode.lock().get() << std::endl;
+    std:: cout << "Closest node to node1 is: " << bestNode.lock()->name << " address: " << bestNode.lock().get() << " age: " << bestNode.lock()->age << std::endl;
 
     std:: cout << "Node1 ref count: " << node1.use_count() << std:: endl;
     std:: cout << "Node2 ref count: " << node2.use_count() << std::endl;
+    std:: cout << "Node3 ref count: " << node3.use_count() << std:: endl;
     std:: cout << std:: endl;
+
+    // while (true) {
+    //     for (std:: weak_ptr<Firework::FireworkNode> node : firework.nodes) {
+    //         auto nodePtr = node.lock();
+    //         if (nodePtr == nullptr) continue;
+    //
+    //         if (nodePtr->age <= 0.0f) {
+    //             std:: cout << "node is dead age is 0" << std:: endl;
+    //             nodePtr->type = Firework:: UNUSED;
+    //             break;
+    //         }
+    //         nodePtr->age -= testDT;
+    //     }
+    // }
 
 }
