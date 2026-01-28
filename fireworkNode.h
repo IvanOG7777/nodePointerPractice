@@ -85,7 +85,7 @@ public:
 private:
     std::shared_ptr<FireworkNode> root;
 
-    void findNearestNeighborHelper(std::shared_ptr<FireworkNode> *current, std::shared_ptr<FireworkNode> *target,
+    void findNearestNeighborHelper(std::shared_ptr<FireworkNode> &current, std::shared_ptr<FireworkNode> *target,
                                    std::shared_ptr<FireworkNode> &bestNode, float &bestDistance, int depth);
 
     static float distance2(std::shared_ptr<FireworkNode>& node1, std::shared_ptr<FireworkNode> &node2);
