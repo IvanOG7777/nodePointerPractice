@@ -97,7 +97,7 @@ float Firework::distance2(std::shared_ptr<FireworkNode>& node1, std::shared_ptr<
 
 //References of the shared_ptr will be pointing to the actual FireworkNode struct
 void Firework::findNearestNeighborHelper(std::shared_ptr<FireworkNode>*current, std::shared_ptr<FireworkNode>*target,
-                                         std::shared_ptr<FireworkNode> *bestNode, float &bestDistance, int depth) {
+                                         std::shared_ptr<FireworkNode> &bestNode, float &bestDistance, int depth) {
     if (*current == nullptr) {
         return;
     }
@@ -107,7 +107,7 @@ void Firework::findNearestNeighborHelper(std::shared_ptr<FireworkNode>*current, 
 
     if (currentDistance > 0.0f && currentDistance < bestDistance) {
         bestDistance = currentDistance;
-        *bestNode = *current;
+        bestNode = *current;
     }
 
     float targetValueAxis = (axis % 2 == 0) ? target->get()->particle.getPosition().x : target->get()->particle.getPosition().y;
@@ -135,7 +135,9 @@ std::shared_ptr<Firework::FireworkNode> Firework::findNearestNeighbor(std::share
         float bestDistance = std::numeric_limits<float>::infinity();
         std::shared_ptr<FireworkNode> bestNode = root;
 
-        findNearestNeighborHelper(&root, &target, &bestNode, bestDistance, 0);
+        findNearestNeighborHelper(&root, &target, bestNode, bestDistance, 0);
+
+        std:: cout << "Address of bestNode in function: " << &bestNode << std::endl;
 
         return bestNode;
 }
