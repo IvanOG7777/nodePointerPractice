@@ -85,10 +85,10 @@ public:
 private:
     std::shared_ptr<FireworkNode> root;
 
-    void findNearestNeighborHelper(std::shared_ptr<FireworkNode> &current, std::shared_ptr<FireworkNode> *target,
-                                   std::shared_ptr<FireworkNode> &bestNode, float &bestDistance, int depth);
+    void findNearestNeighborHelper(std::weak_ptr<FireworkNode> &current, std::weak_ptr<FireworkNode> &target,
+                                   std::weak_ptr<FireworkNode> &bestNode, float &bestDistance, int depth);
 
-    static float distance2(std::shared_ptr<FireworkNode>& node1, std::shared_ptr<FireworkNode> &node2);
+    static float distance2(std::weak_ptr<FireworkNode> &node1, std::weak_ptr<FireworkNode> &node2);
 
 public:
     Firework() : root(nullptr) {
@@ -101,7 +101,7 @@ public:
 
     void addNode(std::shared_ptr<FireworkNode> &node);
 
-    std::shared_ptr<FireworkNode> findNearestNeighbor(std::shared_ptr<FireworkNode> &target);
+    std::weak_ptr<FireworkNode> findNearestNeighbor(std::shared_ptr<FireworkNode> &target);
 
     FireworkNode *getRoot() const;
 };

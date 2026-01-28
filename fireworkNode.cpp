@@ -85,9 +85,17 @@ void Firework::addNode(std::shared_ptr<FireworkNode> &node) {
     }
 }
 
-float Firework::distance2(std::shared_ptr<FireworkNode>& node1, std::shared_ptr<FireworkNode> &node2) {
-    float xSum = node1->particle.getPosition().x - node2->particle.getPosition().x;
-    float ySum = node1->particle.getPosition().y - node2->particle.getPosition().y;
+float Firework::distance2(std::weak_ptr<FireworkNode>& node1, std::weak_ptr<FireworkNode> &node2) {
+
+    auto nodePtr1 = node1.lock();
+    auto nodePtr2 = node2.lock();
+
+    if (nodePtr1 == nullptr || nodePtr2 == nullptr) {
+        return 0.0f;
+    }
+
+    float xSum = nodePtr1->particle.getPosition().x - nodePtr2->particle.getPosition().x;
+    float ySum = nodePtr1->particle.getPosition().y - nodePtr2->particle.getPosition().y;
 
     float xSquared = xSum * xSum;
     float ySquared = ySum * ySum;
@@ -96,25 +104,30 @@ float Firework::distance2(std::shared_ptr<FireworkNode>& node1, std::shared_ptr<
 }
 
 //References of the shared_ptr will be pointing to the actual FireworkNode struct
-void Firework::findNearestNeighborHelper(std::shared_ptr<FireworkNode> &current, std::shared_ptr<FireworkNode>*target,
-                                         std::shared_ptr<FireworkNode> &bestNode, float &bestDistance, int depth) {
-    if (current == nullptr) {
+void Firework::findNearestNeighborHelper(std::weak_ptr<FireworkNode> &current, std::weak_ptr<FireworkNode> &target,
+                                         std::weak_ptr<FireworkNode> &bestNode, float &bestDistance, int depth) {
+
+    auto currentPtr = current.lock();
+    auto targetPtr = target.lock();
+    auto bestNodePtr = bestNode.lock();
+
+    if (currentPtr == nullptr) {
         return;
     }
 
     int axis = depth % 2;
-    float currentDistance = distance2(current, *target);
+    float currentDistance = distance2(current, target);
 
     if (currentDistance > 0.0f && currentDistance < bestDistance) {
         bestDistance = currentDistance;
         bestNode = current;
     }
 
-    float targetValueAxis = (axis % 2 == 0) ? target->get()->particle.getPosition().x : target->get()->particle.getPosition().y;
-    float currentValueAxis = (axis % 2 == 0) ? current->particle.getPosition().x : current->particle.getPosition().y;
+    float targetValueAxis = (axis % 2 == 0) ? targetPtr->particle.getPosition().x : targetPtr->particle.getPosition().y;
+    float currentValueAxis = (axis % 2 == 0) ? currentPtr->particle.getPosition().x : currentPtr->particle.getPosition().y;
 
-    std::shared_ptr<FireworkNode> nearChild = (targetValueAxis < currentValueAxis) ? current->left : current->right;
-    std::shared_ptr<FireworkNode> farChild = (targetValueAxis < currentValueAxis) ? current->right : current->left;
+    std::weak_ptr<FireworkNode> nearChild = (targetValueAxis < currentValueAxis) ? currentPtr->left : currentPtr->right;
+    std::weak_ptr<FireworkNode> farChild = (targetValueAxis < currentValueAxis) ? currentPtr->right : currentPtr->left;
 
     findNearestNeighborHelper(nearChild, target, bestNode, bestDistance, depth + 1);
 
@@ -126,18 +139,21 @@ void Firework::findNearestNeighborHelper(std::shared_ptr<FireworkNode> &current,
     }
 }
 
-std::shared_ptr<Firework::FireworkNode> Firework::findNearestNeighbor(std::shared_ptr<FireworkNode> &target) {
+std::weak_ptr<Firework::FireworkNode> Firework::findNearestNeighbor(std::shared_ptr<FireworkNode> &target) {
         if (root == nullptr) {
             std:: cout << "Tree is null returning target" << std:: endl;
             return target;
         }
 
         float bestDistance = std::numeric_limits<float>::infinity();
-        std::shared_ptr<FireworkNode> bestNode = root;
 
-        findNearestNeighborHelper(root, &target, bestNode, bestDistance, 0);
+        std::weak_ptr<FireworkNode> bestNode = root;
+        std:: weak_ptr<FireworkNode> current = root;
+        std:: weak_ptr<FireworkNode> targetPtr = target;
 
-        std:: cout << "Address of bestNode in function: " << bestNode.get() << std::endl;
+        findNearestNeighborHelper(current, targetPtr, bestNode, bestDistance, 0);
+
+        std:: cout << "Address of bestNode in function: " << bestNode.lock().get() << std::endl;
 
         return bestNode;
 }

@@ -42,14 +42,6 @@ int main() {
     // std:: cout << "Address of node5: " << node5.get() << std::endl;
     // std:: cout << "Address of node6: " << node6.get() << std::endl;
 
-    if (firework.getRoot() == nullptr) {
-        std:: cout << "Root is nullptr" << std:: endl;
-        std:: cout << std:: endl;
-    } else {
-        std:: cout << "Root is not nullptr" << std:: endl;
-        std:: cout << std:: endl;
-    }
-
     firework.nodes[0] = node1;
     firework.nodes[1] = node2;
     firework.nodes[2] = node3;
@@ -64,20 +56,24 @@ int main() {
     for (auto &node : firework.nodes) {
         if (node == nullptr) continue;
         if (node->type == Firework:: UNUSED) continue;
+
+        if (node->age <= 0.0f) {
+            auto minAge = firework.rules[node->type].minAge;
+            auto maxAge = firework.rules[node->type].maxAge;
+
+            std::uniform_real_distribution<float> ageDistribution(minAge, maxAge);
+
+            node->age = ageDistribution(gen);
+        }
         firework.addNode(node);
     }
 
-    if (firework.getRoot() == nullptr) {
-        std:: cout << "Root is nullptr" << std:: endl;
-        std:: cout << std:: endl;
-    } else {
-        std:: cout << "Root is not nullptr" << std:: endl;
-        std:: cout << std:: endl;
-    }
+    std::weak_ptr<Firework::FireworkNode> bestNode = firework.findNearestNeighbor(node1);
 
-    std::shared_ptr<Firework::FireworkNode> bestNode = firework.findNearestNeighbor(node1);
+    std:: cout << "Closest node to node1 is: " << bestNode.lock()->name << " address: " << bestNode.lock().get() << std::endl;
 
-    std:: cout << "Closest node to node1 is: " << bestNode->name << " address: " << bestNode.get() << std::endl;
+    std:: cout << "Node1 ref count: " << node1.use_count() << std:: endl;
+    std:: cout << "Node2 ref count: " << node2.use_count() << std::endl;
     std:: cout << std:: endl;
 
 }
