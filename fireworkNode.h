@@ -104,5 +104,8 @@ public:
 
     std::weak_ptr<FireworkNode> findNearestNeighbor(std::shared_ptr<FireworkNode> &target);
 
+    void allocateNewNode(std:: string nodeName);
+    void addNodesFromVectorToTree();
+
     FireworkNode *getRoot() const;
 };

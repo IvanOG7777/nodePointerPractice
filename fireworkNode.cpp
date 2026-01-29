@@ -45,6 +45,7 @@ void Firework::initRules() {
 void Firework::addNode(std::shared_ptr<FireworkNode> &node) {
     if (root == nullptr) {
         root = node;
+        std:: cout << node->name << " has been added" << std:: endl;
         return;
     }
 
@@ -56,12 +57,14 @@ void Firework::addNode(std::shared_ptr<FireworkNode> &node) {
             if (node->particle.getPosition().x >= current->particle.getPosition().x) {
                 if (current->right == nullptr) {
                     current->right = node;
+                    std:: cout << node->name << " has been added" << std:: endl;
                     return;
                 }
                 current = current->right;
             } else if (node->particle.getPosition().x <= current->particle.getPosition().x) {
                 if (current->left == nullptr) {
                     current->left = node;
+                    std:: cout << node->name << " has been added" << std:: endl;
                     return;
                 }
                 current = current->left;
@@ -70,12 +73,14 @@ void Firework::addNode(std::shared_ptr<FireworkNode> &node) {
             if (node->particle.getPosition().y >= current->particle.getPosition().y) {
                 if (current->right == nullptr) {
                     current->right = node;
+                    std:: cout << node->name << " has been added" << std:: endl;
                     return;
                 }
                 current = current->right;
             } else if (node->particle.getPosition().y <= current->particle.getPosition().y) {
                 if (current->left == nullptr) {
                     current->left = node;
+                    std:: cout << node->name << " has been added" << std:: endl;
                     return;
                 }
                 current = current->left;
@@ -156,6 +161,30 @@ std::weak_ptr<Firework::FireworkNode> Firework::findNearestNeighbor(std::shared_
         std:: cout << "Address of bestNode in function: " << bestNode.lock().get() << std::endl;
 
         return bestNode;
+}
+
+
+// looking for the first slot that is null to assign newly created node within the vector
+void Firework::allocateNewNode(std:: string nodeName) {
+    auto newNode = std::make_shared<FireworkNode>();
+    newNode->name = nodeName;
+
+    std:: cout << "Ref count within function: " << newNode.use_count() << std:: endl;
+
+    for (auto &node : nodes) {
+        if (node == nullptr) {
+            node = newNode;
+            return;
+        }
+    }
+}
+
+void Firework::addNodesFromVectorToTree() {
+    for (auto &node : nodes) {
+        if (node == nullptr) continue;
+
+        addNode(node);
+    }
 }
 
 
