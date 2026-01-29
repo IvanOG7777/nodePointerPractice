@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <vector>
+#include <queue>
 
 #include "particle.h"
 
@@ -20,23 +21,31 @@ void Firework::initRules() {
     rules[1].type = SMALL;
     rules[1].maxAge = 1.5f;
     rules[1].minAge = 0.5f;
+    rules[1].maxPos = {500, 432, 0};
+    rules[1].minPos = {234, 232, 0};
     rules[1].init(0);
 
     rules[2].type = MEDIUM;
     rules[2].maxAge = 1.5f;
     rules[2].minAge = 0.5f;
+    rules[2].maxPos = {634, 732, 0};
+    rules[2].minPos = {434, 932, 0};
     rules[2].init(1);
     rules[2].payloads[0].set(SMALL, 8);
 
     rules[3].type = LARGE;
     rules[3].maxAge = 1.5f;
     rules[3].minAge = 0.5f;
+    rules[3].maxPos = {334, 732, 0};
+    rules[3].minPos = {523, 252, 0};
     rules[3].init(1);
     rules[3].payloads[0].set(MEDIUM, 4);
 
     rules[4].type = EXTRALARGE;
     rules[4].maxAge = 1.5f;
     rules[4].minAge = 0.5f;
+    rules[4].maxPos = {187, 732, 0};
+    rules[4].minPos = {23, 223, 0};
     rules[4].init(2);
     rules[4].payloads[0].set(LARGE, 2);
     rules[4].payloads[1].set(MEDIUM, 4);
@@ -165,9 +174,10 @@ std::weak_ptr<Firework::FireworkNode> Firework::findNearestNeighbor(std::shared_
 
 
 // looking for the first slot that is null to assign newly created node within the vector
-void Firework::allocateNewNode(std:: string nodeName) {
+void Firework::allocateNewNode(std:: string nodeName, Firework::SizeType type) {
     auto newNode = std::make_shared<FireworkNode>();
     newNode->name = nodeName;
+    newNode->type = type;
 
     std:: cout << "Ref count within function: " << newNode.use_count() << std:: endl;
 
@@ -186,6 +196,37 @@ void Firework::addNodesFromVectorToTree() {
         addNode(node);
     }
 }
+
+void Firework::printByDepth() {
+    if (root == nullptr) {
+        std:: cout << "No nodes in tree returning" << std:: endl;
+        return;
+    }
+
+    std:: weak_ptr<FireworkNode> current = root;
+    int depth = 0;
+    std:: queue<std::weak_ptr<FireworkNode>> queue;
+    queue.push(current);
+
+    while (!queue.empty()) {
+        size_t length = queue.size();
+        std:: cout << "Depth: " << depth << std::endl;
+        auto node = queue.front().lock();
+        for (size_t i = 0; i < length; i++) {
+            if (node->left != nullptr) {
+                queue.push(node->left);
+            }
+            if (node->right != nullptr) {
+                queue.push(node->right);
+            }
+            std:: cout << " " << node->name << " ";
+            queue.pop();
+        }
+        depth++;
+    }
+
+}
+
 
 
 Firework::FireworkNode *Firework::getRoot() const {

@@ -43,6 +43,12 @@ public:
         float minAge;
         float maxAge;
 
+        Vector3 minVel{};
+        Vector3 maxVel{};
+
+        Vector3 minPos{};
+        Vector3 maxPos{};
+
         unsigned int type;
         unsigned int payloadCount;
 
@@ -104,8 +110,9 @@ public:
 
     std::weak_ptr<FireworkNode> findNearestNeighbor(std::shared_ptr<FireworkNode> &target);
 
-    void allocateNewNode(std:: string nodeName);
+    void allocateNewNode(std:: string nodeName, Firework::SizeType type);
     void addNodesFromVectorToTree();
+    void printByDepth();
 
     FireworkNode *getRoot() const;
 };
