@@ -12,7 +12,7 @@ int main() {
     Firework firework;
 
     firework.nodes.reserve(10);
-    firework.nodes.resize(10, std::make_shared<Firework::FireworkNode>());
+    firework.nodes.resize(10);
     firework.initRules();
 
     auto node1 = std::make_shared<Firework::FireworkNode>("Node1");
@@ -80,14 +80,15 @@ int main() {
         firework.addNode(node);
     }
 
-    std::weak_ptr<Firework::FireworkNode> bestNode = firework.findNearestNeighbor(node1);
-    std:: cout << "Closest node to node1 is: " << bestNode.lock()->name << " address: " << bestNode.lock().get() << " age: " << bestNode.lock()->age << std::endl;
-    std:: cout << std:: endl;
+    std::weak_ptr<Firework::FireworkNode> weakNode1 = node1;
 
-    std:: cout << "Node1 ref count: " << node1.use_count() << std:: endl;
-    std:: cout << "Node2 ref count: " << node2.use_count() << std::endl;
-    std:: cout << "Node3 ref count: " << node3.use_count() << std:: endl;
-    std:: cout << std:: endl;
+    auto weak = weakNode1.lock();
+
+    firework.nodes[0].reset();
+
+    std:: cout << "Node1 ref count: " << node1.use_count() <<  std:: endl;
+
+    return 0;
 
     int frame = 0;
     while (frame < 100) {
@@ -98,10 +99,13 @@ int main() {
 
             if (nodePtr->age <= 0.0f) {
                 std:: cout << nodePtr->name << ": has died switching type to UNUSED" << std:: endl;
-                nodePtr->type = Firework:: UNUSED;
+                node.reset();
+                // nodePtr->type = Firework:: UNUSED;
+                break;
             }
             std:: cout << nodePtr->name <<  " type: " << nodePtr->type << std:: endl;
             std:: cout << nodePtr->name << " age: " << nodePtr->age << std:: endl;
+            std:: cout << nodePtr->name << " ref count: " << nodePtr.use_count() << std::endl;
 
             nodePtr->age -= testDT;
 
@@ -112,8 +116,17 @@ int main() {
         std:: cout << "Frame count: " << frame << std:: endl;
     }
 
+    std:: cout << "Node1 ref count: " << node1.use_count() << std::endl;
+    std:: cout << "Node2 ref count: " << node2.use_count() << std::endl;
+    std:: cout << "Node3 ref count: " << node3.use_count() << std::endl;
+    std:: cout << "Node4 ref count: " << node4.use_count() << std::endl;
+    std:: cout << "Node5 ref count: " << node5.use_count() << std::endl;
+    std:: cout << "Node6 ref count: " << node6.use_count() << std::endl;
+
+
     for (auto &node : firework.nodes) {
         if (node == nullptr) {
+            std:: cout << "Node is null" << std:: endl;
             continue;
         }
         std:: cout << node->type << std:: endl;
