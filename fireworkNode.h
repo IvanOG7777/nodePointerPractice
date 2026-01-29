@@ -69,6 +69,8 @@ public:
         unsigned int type;
         std::string name;
 
+        FireworkNode() : left(nullptr), right(nullptr), age(0), type(UNUSED) {}
+
         FireworkNode(const std::string &name) : left(nullptr), right(nullptr), age(0), type(UNUSED), name(name) {
             std::cout << name << " node has been created" << std::endl;
         }
@@ -91,8 +93,7 @@ private:
     static float distance2(std::weak_ptr<FireworkNode> &node1, std::weak_ptr<FireworkNode> &node2);
 
 public:
-    Firework() : root(nullptr) {
-    }
+    Firework() : root(nullptr) {}
 
     std::vector<std::shared_ptr<FireworkNode> > nodes;
     std::vector<Rule> rules;
