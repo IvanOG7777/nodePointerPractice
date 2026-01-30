@@ -14,11 +14,11 @@ int main() {
 
     firework.initRules();
 
-    // firework.allocateNewNode("Node 1", static_cast<Firework::SizeType>(1));
+    firework.allocateNewNode("Node 1", static_cast<Firework::SizeType>(1));
     firework.allocateNewNode("Node 2", static_cast<Firework::SizeType>(2));
     firework.allocateNewNode("Node 3", static_cast<Firework::SizeType>(3));
-    // firework.allocateNewNode("Node 4", static_cast<Firework::SizeType>(4));
-    // firework.allocateNewNode("Node 5", static_cast<Firework::SizeType>(1));
+    firework.allocateNewNode("Node 4", static_cast<Firework::SizeType>(4));
+    firework.allocateNewNode("Node 5", static_cast<Firework::SizeType>(1));
 
 
     int frameCount = 0;
@@ -81,21 +81,9 @@ int main() {
                 node.reset();
             }
         }
-
         frameCount++;
     }
 
-    return 0;
-
-    //
-    // for (auto &node : firework.nodes) {
-    //     if (node == nullptr) {
-    //         std:: cout << "Node is null" << std:: endl;
-    //         std:: cout << "Address of node: " << node.get() << std::endl;
-    //         std:: cout << std:: endl;
-    //         continue;
-    //     }
-    //     std:: cout << node->type << std:: endl;
-    // }
-
+    std:: cout << "Is vector empty: " << (firework.nodes.empty() ? "True" : "False") << '\n';
+    std:: cout << "Total added nodes: " << firework.addedNodeCount << '\n';
 }

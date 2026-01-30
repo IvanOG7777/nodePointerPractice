@@ -104,6 +104,15 @@ public:
     std::vector<std::shared_ptr<FireworkNode> > nodes;
     std::vector<Rule> rules;
     int nodeCount;
+    int addedNodeCount;
+
+    bool areVectorElementsNull() {
+        bool null = false;
+
+        for (auto &node : nodes) {
+            
+        }
+    }
 
     void initRules();
 

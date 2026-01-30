@@ -15,6 +15,7 @@ Firework::Firework() {
     nodes.reserve(500);
     nodes.resize(500);
     nodeCount = 0;
+    addedNodeCount = 0;
 }
 
 void Firework::initRules() {
@@ -194,6 +195,7 @@ void Firework::allocateNewNode(std:: string nodeName, Firework::SizeType type) {
     std:: cout << "Adding: " << nodeName << " to the vector of nodes" << std:: endl;
 
     nodes[nodeCount++] = newNode;
+    addedNodeCount++;
 }
 
 void Firework::addNodesFromVectorToTree() {
