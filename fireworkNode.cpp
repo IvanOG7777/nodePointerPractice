@@ -181,9 +181,14 @@ void Firework::allocateNewNode(std:: string nodeName, Firework::SizeType type) {
 
     std:: cout << "Adding: " << nodeName << " to the vector of nodes" << std:: endl;
 
-    for (auto &node : nodes) {
-        if (node == nullptr) {
-            node = newNode;
+    for (size_t i = 0; i < nodes.size(); i++) {
+        if (i >= nodes.size()) {
+            std:: cout << "Nodes vector is full cant add more" << std:: endl;
+            return;
+        }
+
+        if (nodes[i] == nullptr) {
+            nodes[i] = newNode;
             return;
         }
     }
