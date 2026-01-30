@@ -81,6 +81,11 @@ int main() {
 
             if (node->age <= 0.0f) {
                 std:: cout << node->name << ": has died switching type to UNUSED" << std:: endl;
+                for (size_t i = 0; i < firework.rules[node->type].payloadCount; i++) {
+                    for (size_t j = 0; j < firework.rules[node->type].payloads.size(); j++) {
+                        
+                    }
+                }
                 node.reset();
                 // nodePtr->type = Firework:: UNUSED;
                 continue;
