@@ -236,6 +236,15 @@ void Firework::printByDepth() {
 
 }
 
+bool Firework::hasActiveNodes() {
+    for (auto &node : nodes) {
+            if (node != nullptr) {
+                return false;
+            }
+    }
+
+    return true;
+}
 
 
 Firework::FireworkNode *Firework::getRoot() const {

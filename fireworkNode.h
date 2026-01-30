@@ -106,13 +106,7 @@ public:
     int nodeCount;
     int addedNodeCount;
 
-    bool areVectorElementsNull() {
-        bool null = false;
-
-        for (auto &node : nodes) {
-            
-        }
-    }
+    bool hasActiveNodes();
 
     void initRules();
 

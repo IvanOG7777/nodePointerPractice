@@ -22,7 +22,7 @@ int main() {
 
 
     int frameCount = 0;
-    while (frameCount < 300) {
+    while (!firework.hasActiveNodes()) {
 
         for (auto &node : firework.nodes) {
             if (node == nullptr) continue;
@@ -84,6 +84,10 @@ int main() {
         frameCount++;
     }
 
-    std:: cout << "Is vector empty: " << (firework.nodes.empty() ? "True" : "False") << '\n';
+    std:: cout << "Does vector have any active nodes?: " << (!firework.hasActiveNodes() ? "True" : "False") << '\n';
+
+    for (auto &node: firework.nodes) {
+        std::  cout << node.get() << '\n';
+    }
     std:: cout << "Total added nodes: " << firework.addedNodeCount << '\n';
 }
