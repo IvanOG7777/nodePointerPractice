@@ -11,6 +11,12 @@
 #include "fireworkNode.h"
 
 
+Firework::Firework() {
+    nodes.reserve(10);
+    nodes.resize(10);
+    nodeCount = 0;
+}
+
 void Firework::initRules() {
     rules.clear();
     rules.resize(5);
@@ -175,23 +181,19 @@ std::weak_ptr<Firework::FireworkNode> Firework::findNearestNeighbor(std::shared_
 
 // looking for the first slot that is null to assign newly created node within the vector
 void Firework::allocateNewNode(std:: string nodeName, Firework::SizeType type) {
+
+    if (nodeCount >= nodes.size()) {
+        std:: cout << "Nodes is full no space for new node. Returning" << std:: endl;
+        return;
+    }
+
     auto newNode = std::make_shared<FireworkNode>();
     newNode->name = nodeName;
     newNode->type = type;
 
     std:: cout << "Adding: " << nodeName << " to the vector of nodes" << std:: endl;
 
-    for (size_t i = 0; i < nodes.size(); i++) {
-        if (i >= nodes.size()) {
-            std:: cout << "Nodes vector is full cant add more" << std:: endl;
-            return;
-        }
-
-        if (nodes[i] == nullptr) {
-            nodes[i] = newNode;
-            return;
-        }
-    }
+    nodes[nodeCount++] = newNode;
 }
 
 void Firework::addNodesFromVectorToTree() {

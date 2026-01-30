@@ -99,10 +99,11 @@ private:
     static float distance2(std::weak_ptr<FireworkNode> &node1, std::weak_ptr<FireworkNode> &node2);
 
 public:
-    Firework() : root(nullptr) {}
+    Firework();
 
     std::vector<std::shared_ptr<FireworkNode> > nodes;
     std::vector<Rule> rules;
+    int nodeCount;
 
     void initRules();
 

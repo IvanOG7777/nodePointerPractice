@@ -12,8 +12,6 @@ int main() {
     std:: random_device posGen;
     Firework firework;
 
-    firework.nodes.reserve(20);
-    firework.nodes.resize(20);
     firework.initRules();
 
     firework.allocateNewNode("Node 1", static_cast<Firework::SizeType>(1));
