@@ -179,7 +179,7 @@ void Firework::allocateNewNode(std:: string nodeName, Firework::SizeType type) {
     newNode->name = nodeName;
     newNode->type = type;
 
-    std:: cout << "Ref count within function: " << newNode.use_count() << std:: endl;
+    std:: cout << "Adding: " << nodeName << " to the vector of nodes" << std:: endl;
 
     for (auto &node : nodes) {
         if (node == nullptr) {

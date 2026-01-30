@@ -68,10 +68,47 @@ int main() {
         } else if (node->right != nullptr) {
             std:: cout << "Right of : " << node->name << " is: " << node->right->name << std:: endl;
         } else {
-            std:: cout << node->name << " has no children nodes" << std:: endl;
+            std:: cout << node->name << " has no children nodes: " << std:: endl;
         }
         std:: cout << std:: endl;
     }
+
+
+    while (firework.nodes[1]->age >= 0.0f) {
+        firework.nodes[1]->age -= testDT;
+        if (firework.nodes[1]->age <= 0.0f) {
+            std:: cout << firework.nodes[0]->name << " has died adding its children" << std:: endl;
+            for (size_t i = 0; i < firework.rules[firework.nodes[1]->type].payloads.size(); i++) {
+                for (size_t j = 0; j < firework.rules[firework.nodes[1]->type].payloads[i].count; j++) {
+                    std:: string name;
+
+                    switch (firework.rules[firework.nodes[1]->type].payloads[i].type) {
+                        case Firework::UNUSED:
+                            name = "UNUSED";
+                            break;
+                        case Firework::SMALL:
+                            name = "SMALL";
+                            break;
+                        case Firework::MEDIUM:
+                            name = "MEDIUM";
+                            break;
+                        case Firework::LARGE:
+                            name = "LARGE";
+                            break;
+                        case Firework::EXTRALARGE:
+                            name = "EXTRALARGE";
+                            break;
+                        default:
+                            name = "UNKNOWN";
+                    }
+                    firework.allocateNewNode(name, static_cast<Firework::SizeType>(firework.rules[firework.nodes[1]->type].payloads[i].type));
+                }
+            }
+            break;
+        }
+    }
+
+    return 0;
 
     int frame = 0;
     while (frame < 100) {
@@ -82,9 +119,31 @@ int main() {
             if (node->age <= 0.0f) {
                 std:: cout << node->name << ": has died switching type to UNUSED" << std:: endl;
                 for (size_t i = 0; i < firework.rules[node->type].payloadCount; i++) {
-                    for (size_t j = 0; j < firework.rules[node->type].payloads.size(); j++) {
-                        
+                    std:: string name;
+
+                    auto type = firework.rules[node->type].payloads[i].type;
+
+                    switch (static_cast<Firework::SizeType>(type)) {
+                        case Firework:: UNUSED:
+                            name = "UNUSED";
+                            break;
+                        case Firework:: SMALL:
+                            name = "SMALL";
+                            break;
+                        case Firework:: MEDIUM:
+                            name = "MEDIUM";
+                            break;
+                        case Firework:: LARGE:
+                            name = "LARGE";
+                            break;
+                        case Firework:: EXTRALARGE:
+                            name = "EXTRALARGE";
+                            break;
+                        default:
+                            name = "UNKNOWN";
+                            break;
                     }
+                    firework.allocateNewNode(name, static_cast<Firework::SizeType>(type));
                 }
                 node.reset();
                 // nodePtr->type = Firework:: UNUSED;
@@ -102,6 +161,8 @@ int main() {
         frame++;
         std:: cout << "Frame count: " << frame << std:: endl;
     }
+
+    return 0;
 
     for (auto &node : firework.nodes) {
         if (node == nullptr) {
