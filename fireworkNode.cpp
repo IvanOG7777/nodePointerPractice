@@ -12,8 +12,8 @@
 
 
 Firework::Firework() {
-    nodes.reserve(10);
-    nodes.resize(10);
+    nodes.reserve(500);
+    nodes.resize(500);
     nodeCount = 0;
 }
 
