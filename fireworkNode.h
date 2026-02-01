@@ -106,8 +106,6 @@ public:
     int nodeCount;
     int addedNodeCount;
 
-    bool hasActiveNodes();
-
     void initRules();
 
     void addNode(std::shared_ptr<FireworkNode> &node);

@@ -12,8 +12,8 @@
 
 
 Firework::Firework() {
-    nodes.reserve(500);
-    nodes.resize(500);
+    nodes.reserve(50);
+    nodes.resize(50);
     nodeCount = 0;
     addedNodeCount = 0;
 }
@@ -234,16 +234,6 @@ void Firework::printByDepth() {
         depth++;
     }
 
-}
-
-bool Firework::hasActiveNodes() {
-    for (auto &node : nodes) {
-            if (node != nullptr) {
-                return false;
-            }
-    }
-
-    return true;
 }
 
 

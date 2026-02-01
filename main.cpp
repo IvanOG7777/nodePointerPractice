@@ -22,7 +22,7 @@ int main() {
 
 
     int frameCount = 0;
-    while (!firework.hasActiveNodes()) {
+    while (firework.addedNodeCount > 0) {
 
         for (auto &node : firework.nodes) {
             if (node == nullptr) continue;
@@ -38,8 +38,8 @@ int main() {
             }
 
             if (node->particle.getPosition().x == 0 && node->particle.getPosition().y == 0) {
-                auto minPos = firework.rules[node->type].minPos;
-                auto maxPos = firework.rules[node->type].maxPos;
+                const auto minPos = firework.rules[node->type].minPos;
+                const auto maxPos = firework.rules[node->type].maxPos;
 
                 std::uniform_real_distribution<float> posXDistribution(minPos.x, maxPos.x);
                 std::uniform_real_distribution<float> posYDistribution(minPos.y, maxPos.y);
@@ -79,15 +79,13 @@ int main() {
                     }
                 }
                 node.reset();
+                firework.addedNodeCount--;
             }
         }
         frameCount++;
     }
 
-    std:: cout << "Does vector have any active nodes?: " << (!firework.hasActiveNodes() ? "True" : "False") << '\n';
+    std:: cout << "Active node count: " << firework.addedNodeCount << std:: endl;
 
-    for (auto &node: firework.nodes) {
-        std::  cout << node.get() << '\n';
-    }
-    std:: cout << "Total added nodes: " << firework.addedNodeCount << '\n';
+    std:: cout << "Does vector have any active nodes?: " << (firework.addedNodeCount == 0 ? "No more active nodes" : "Active Nodes") << '\n';
 }
